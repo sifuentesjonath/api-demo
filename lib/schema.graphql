@@ -1,0 +1,88 @@
+
+
+type Course{
+    _id:ID!
+    tittle: String!
+    teacher: String
+    description: String!
+    topic: String
+    people:[Student]
+}
+
+union GlobalSearch = Student | Monitor | Course
+
+interface Person {
+_id: ID!
+name: String!
+email: String!
+}
+
+type Student implements Person{
+_id: ID!
+name: String!
+email: String!
+avatar: String
+}
+
+type Monitor implements Person{
+_id: ID!
+name: String!
+email: String!
+phone: String
+}
+
+type Query{
+"Devuelve los cursos"
+    getCourses: [Course]
+"Devuelve un curso"    
+    getCourse(_id: ID!): Course
+"Devuelve los estudiantes"
+    getPersons: [Person]
+"Devuelve un estudiante"    
+    getPerson(_id: ID!): Person
+"Buscar coincidencias"
+    searchItems(keyword:String!):[GlobalSearch]
+}
+
+input CourseInput{
+    tittle: String!
+    teacher: String
+    description: String!
+    topic: String
+}
+input CourseEditInput{
+    tittle: String
+    teacher: String
+    description: String
+    topic: String
+}
+
+
+input PersonInput {
+    name: String!
+    email: String!
+    phone: String
+    avatar: String
+}
+input PersonEditInput {
+    name: String
+    email: String
+    phone: String
+    avatar: String
+}
+
+type Mutation {
+"crea un cursillo "
+createCourse (input: CourseInput!): Course
+"edita un cursillo "
+editCourse (_id:ID!,input: CourseEditInput!): Course
+"edita un Person "
+editPerson (_id:ID!,input: PersonEditInput!): Person
+"crea un estudiante "
+createPerson (input: PersonInput!): Person
+"Agrega una persona a un curso"
+addPerson(courseID: ID!, personID:ID!):Course
+}
+
+
+
